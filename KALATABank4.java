@@ -4,7 +4,7 @@
 package fr.insandji.groupe4;
 import java.util.*;
 
- class KALATAbank4
+ class KALATABank4
  {
    public static Scanner touch= new Scanner (System.in ); 
    public static int n1=0, k1=0, n=0, i=0,j=0, element=0, fin=2;
