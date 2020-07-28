@@ -9,14 +9,20 @@ import java.io.*;
  class KALATABank4{
    public static Scanner touch= new Scanner (System.in ); 
    public static File folder =new File (" devoir_groupe_4/");
+   
    public static File file = new File (" devoir_groupe_4/Base_De_Donnee_Client.txt");
-   public static File file1=new File (" devoir_groupe_4/Base_De_Donnee_Compte.txt");
    public static File files=new File (" devoir_groupe_4/Base_De_Donnee_Client1.txt");
+   public static File fille=new File (" devoir_groupe_4/Base_De_Donnee_Client2.txt");
+   
+   public static File file1=new File (" devoir_groupe_4/Base_De_Donnee_Compte.txt");
+   public static File files1=new File (" devoir_groupe_4/Base_De_Donnee_Compte1.txt");
+   public static File fille1=new File (" devoir_groupe_4/Base_De_Donnee_Compte2.txt");
+   
    public static int w=0,n1=0,jour=1,mois=1,annee=2000,nk=0,l=0, k1=0, n=0, i=0,j=0, element=0, fin=2,nombrealeatoire=1,telephone=0,r=0,el=0;
-   public static ArrayList<String> choix =new ArrayList();
-   public static ArrayList<String> choix1=new ArrayList();
-   public static ArrayList<String> choix2=new ArrayList();
-   public static ArrayList<String> choix3=new ArrayList();
+   public static ArrayList<String> choix =new ArrayList<>();
+   public static ArrayList<String> choix1=new ArrayList<>();
+   public static ArrayList<String> choix2=new ArrayList<>();
+   public static ArrayList<String> choix3=new ArrayList<>();
    public static String g,Dernier_action, m,nn,nom,prenom,metier,ID_client,ID_compte,sms_mois,sms_jour,sms_annee;
    public static String mot="";
    
@@ -536,10 +542,20 @@ import java.io.*;
             }catch(IOException e){
 			e.printStackTrace();
 		    }
-		    files.renameTo(file);
+		    //files.renameTo(file);
     	}catch(IOException e){
 			e.printStackTrace();
 		}
+		files.renameTo(file);
+		if(files.renameTo(file)){
+			System.out.println("arrive");
+		}
+		System.out.println("arrivessss");
+		fille=file;
+		file=files;
+		files=fille;
+		fille.delete();
+		files.delete();
 	}
     public static void Suppression(){
         System.out.println("si vous voulez supprimer un client taper 1 sinon pour supprimer tout les clients taper 2");
@@ -614,8 +630,13 @@ import java.io.*;
                        }catch(IOException e){
 							e.printStackTrace();
 					   }
-					   files.renameTo(file);
+					   
 					   System.out.println("la Suppression a ete effectue a avec succes ");
+					   fille=file;
+					   file=files;
+					   files=fille;
+					   files.delete();
+					   fille.delete();
 				   }
                     else{
 						System.out.println("la Suppression n a pas ete effectue");
@@ -743,7 +764,7 @@ import java.io.*;
             break;
         case 4:
             System.out.println("=================================================================");
-            Afficher_les_comptes();
+            Afficher_les_comptes(file1);
       Gestion_des_comptes();
             break;           
         case 5:
@@ -757,7 +778,7 @@ import java.io.*;
     public static void nouveau_compte (String id,int nb){
 		int f=0;
 		if(nb==0){
-			System.out.println("\n maintenant que vous etes un client il vous faut un compte");
+			System.out.println("\n maintenant que vous etes un client il vous faut un compte\n");
 			Id (1);
 		    ID_compte=(nombrealeatoire+"B");
 	    	System.out.println("l identifiant de son nouveau compte est "+ID_compte);
@@ -775,6 +796,7 @@ import java.io.*;
 		else if(nb==1){
 		    int j =1;
             int i=1;
+			int nk=0;
             String me; 
 	     	if (!file.exists()){
 			   try{
@@ -784,10 +806,10 @@ import java.io.*;
 			    }
 	    	}
 		    try(FileInputStream fise=new FileInputStream(file)){
-			    Scanner yc = new Scanner(fise);
-			    System.out.println("voici les identifiant client contenu dans la base de donnee");
-			    while(yc.hasNextLine()){
-                    String mot=yc.nextLine();
+			    Scanner Pc = new Scanner(fise);
+			    System.out.println("\n voici les identifiant client contenu dans la base de donnee");
+			    while(Pc.hasNextLine()){
+                    String mot=Pc.nextLine();
                    char c=mot.charAt(0);
                    char c1=mot.charAt(1);
                    char c2=mot.charAt(2);
@@ -814,30 +836,30 @@ import java.io.*;
 		         	Id (1);
 		            ID_compte=(nombrealeatoire+"B");
 	             	System.out.println("l identifiant de son nouveau compte est "+ID_compte);
-	             	 int nk=0;
 	             	do{
 	             	     
 		    	         System.out.println("combien voulez vous mettre dans le compte?(superieir ou egal a 25 000)");
 		    	         int somme = touch.nextInt();
 		    	         nk=somme;
-		    	         if (nk <25000){
+		    	        if (nk <25000){
 			                   System.out.println("désolée mais la somme entré doit etre supérieur  a 25 000 FCFA");
-			             }
-	       	         }while (nk <25000);
-	     	         Dernier_action=("depot de "+j+"FCFA"); 
+							   nk=0;
+			            }
+	       	        }while (nk <25000);
+	     	         Dernier_action=("depot de "+nk+"FCFA"); 
 		             ecrirefichier(ID_compte ,choix1.get(n1),nk,Dernier_action);
 		    	}
 		    }
     }
-    public static void Afficher_les_comptes(){
-       if (!file1.exists()){
+    public static void Afficher_les_comptes(File fit){
+       if (!fit.exists()){
 			try{
-				file1.createNewFile();
+				fit.createNewFile();
 			}catch(IOException e){
 				e.printStackTrace();
 			}
 		}
-		try(FileInputStream fis=new FileInputStream(file1)){
+		try(FileInputStream fis=new FileInputStream(fit)){
 			Scanner sc = new Scanner(fis);
 			System.out.println("\nidentifiant_compte identifiant_client solde  dernier action\n");
 			while(sc.hasNextLine()){
@@ -927,7 +949,7 @@ import java.io.*;
                             String mot=tc.nextLine();
                            if(i!=r){
                                 System.out.println(mot);
-                                try (PrintWriter pw=new PrintWriter(new FileOutputStream(files,true))){
+                                try (PrintWriter pw=new PrintWriter(new FileOutputStream(files1,true))){
                                     pw.println (mot);
                                 }catch (IOException e){
                               e.printStackTrace();
@@ -938,7 +960,13 @@ import java.io.*;
                    }catch(IOException e){
 			        e.printStackTrace();
 		           }
-		           files.renameTo(file1);
+				   fille1=file1;
+		           file1=files1;
+				   files1=fille1;
+				   files1.delete();
+				   fille1.delete();
+				  
+				   //if()
 				   System.out.println("la Suppression a ete effectue a avec succes ");
     	       }catch(IOException e){
 		      	e.printStackTrace();
@@ -947,6 +975,8 @@ import java.io.*;
 		   else{
                System.out.println("la Suppression n a pas ete effectue");
            }
+		   files1.delete();
+		   fille1.delete();
 	}
 	
 	public static void Gestion_des_operations(){
@@ -982,5 +1012,6 @@ import java.io.*;
        }
     }
 }
+      
       
     
